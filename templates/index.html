@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask-SocketIO Example</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+           // socket.send(`User has connected! Hello: {{name}}` );
+            socket.emit('user_connected', `User has connected! Hello: {{ name }}`);
+        });
+
+        socket.on('response', function(data) {
+            console.log(data);
+            document.getElementById('testlist').innerHTML += `<li>${data.data}</li>`;
+        });
+
+        socket.on('dashboard', function(data) {
+            console.log(data);
+            //document.getElementById('txtarea2').value =data.data;
+            document.getElementById('testlist').innerHTML += `<li>${data.data}</li>`;
+        });
+
+
+       function send() {
+            let vale = document.getElementById('txtarea2').value;
+            socket.emit('text', vale);
+        }
+    </script>
+
+        <textarea id="txtarea2"></textarea>
+
+        <ul id="testlist">
+
+        </ul>
+
+        <button id="send" onclick="send()">
+           send
+        </button>
+</body>
+</html>
