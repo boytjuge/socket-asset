@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask-SocketIO Example</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="
+    https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js
+    "></script>
+    <link href="
+    https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css
+    " rel="stylesheet">
+</head>
+<body>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        console.log('http://' + document.domain + ':' + location.port)
+        socket.on('connect', function() {
+           // socket.send(`User has connected! Hello: {{name}}` );
+            socket.emit('user_connected', `User has connected! Hello: {{ name }}`);
+        });
+
+        socket.on('response', function(data) {
+            console.log(data);
+            //document.getElementById('testlist').innerHTML += `<li>${data.data}</li>`;
+        });
+
+      //  socket.on('dashboard', function(data) {
+         //   console.log(data);
+            //document.getElementById('txtarea2').value =data.data;
+          //  document.getElementById('testlist').innerHTML += `<li>${data.data}</li>`;
+       // });
+
+       function send(queue,id) {
+            let vale = document.getElementById(`queuetext${id}`).value;
+            let floorno = document.getElementById(`floor${id}`).value;
+            let counter = document.getElementById(`counter${id}`).value;
+            socket.emit('queue', JSON.stringify({"id": id, "queue": vale , "floor":floorno , "counter":counter}));
+        }
+    </script>
+
+        <table class="table">
+            <tr>
+                <td>queue/floor/counter</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="queuetext1"><input type="text" id="floor1"><input type="text" id="counter1"></td><td>Room1</td><td><button class="btn btn-primary" onclick="send(2567,1)">call</button></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="queuetext2"><input type="text" id="floor2"><input type="text" id="counter2"></td><td>Room2</td><td><button class="btn btn-primary" onclick="send(2568,2)">call</button></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="queuetext3"><input type="text" id="floor3"><input type="text" id="counter3"></td><td>Room3</td><td><button class="btn btn-primary" onclick="send(2569,3)">call</button></td>
+            </tr>
+        </table>
+
+        <!-- <textarea id="txtarea2"></textarea> -->
+
+        <!-- <ul id="testlist">
+
+        </ul> -->
+
+        <!-- <button id="send" onclick="send()">
+           send
+        </button> -->
+</body>
+</html>
